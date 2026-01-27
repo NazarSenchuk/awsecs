@@ -42,3 +42,8 @@ terraform.rc
 .Trashes
 ehthumbs.db
 Thumbs.db
+<<<<<<< HEAD
+=======
+demo.tfvars
+.terraform.lock.hcl
+>>>>>>> 1198e65 (initialization)

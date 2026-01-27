@@ -12,34 +12,7 @@ This project provides a robust, modular, and scalable Terraform configuration to
 - **Autoscaling**: Target tracking scaling based on CPU or memory metrics.
 - **Security First**: Granular IAM roles and least-privileged security groups.
 
-## 🗺️ Architecture Overview
 
-```mermaid
-graph TD
-    User((User)) -->|HTTPS| ALB[Application Load Balancer]
-    ALB -->|Port 3000/3001| ECS[ECS Cluster]
-    
-    subgraph VPC [AWS VPC]
-        subgraph PublicSubnets [Public Subnets]
-            ALB
-        end
-        
-        subgraph PrivateSubnets [Private Subnets]
-            subgraph ECSService [ECS Services]
-                Frontend[Frontend Service]
-                API[API Service]
-            end
-        end
-    end
-    
-    GitHub((GitHub Repo)) -->|Push| Actions[GitHub Actions]
-    Actions -->|Build & Push| ECR[(Amazon ECR)]
-    Actions -->|Deploy| CodeDeploy[AWS CodeDeploy]
-    CodeDeploy -->|Blue/Green| Frontend
-    CodeDeploy -->|Blue/Green| API
-```
-
-## 📁 Project Structure
 
 ```text
 ├── main.tf              # Provider and backend configuration
