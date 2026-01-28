@@ -129,6 +129,7 @@ services = {
 ################################################################################
 # CI/CD Configuration
 ################################################################################
+# It will generate actions workflows for GitHub in ./modules/cicd/generated/
 cicd = {
   # Whether to enable GitHub integration for the pipeline
   github = true

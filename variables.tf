@@ -12,10 +12,15 @@ variable "infrastructure" {
   description = "Infrastructure configuration"
   type = object({
     type         = string
-    fargate_spot = optional(bool, false )
+    fargate_spot = optional(bool, false)
     platform     = optional(string, "X86_64")
     ec2_types    = optional(list(string), [])
   })
+
+  validation {
+    condition     = contains(["FARGATE", "EC2"], var.infrastructure.type)
+    error_message = "The infrastructure type must be either 'FARGATE' or 'EC2'."
+  }
 }
 
 variable "services" {
@@ -25,10 +30,10 @@ variable "services" {
     img           = string
     desired_count = number
     alb_path      = string
-    health_check  = optional(string ,"/") 
+    health_check  = optional(string, "/")
     blue_green    = optional(bool, false)
     target_port   = optional(number, 80)
-    spot_percent  = optional(number , 40)
+    spot_percent  = optional(number, 40)
     requirements = optional(object({
       cpu    = optional(number, 256)
       memory = optional(number, 512)
@@ -53,5 +58,21 @@ variable "services" {
       scale_out_cooldown = optional(number, 300)
     })
   }))
+
+  validation {
+    condition = alltrue([
+      for service in var.services : contains(["BLUE_GREEN", "ROLLING"], service.deploy.strategy)
+    ])
+    error_message = "Deployment strategy must be one of: BLUE_GREEN, ROLLING."
+  }
 }
-variable "cicd" {}
+
+variable "cicd" {
+  description = "CI/CD pipeline configuration"
+  type = object({
+    github              = bool
+    github_organization = string
+    registry            = string
+    registry_region     = string
+  })
+}

@@ -10,13 +10,16 @@ This document tracks known bugs, common errors, and their workarounds.
 - **Solution:** 
   - Execute terraform provisioning again with the same configurations.
   
+### 2. Deployments in progress status
+**Error:** `Sometimes  , deployments  can stop on "in progress" status , there a lot of  reasons. Commonly it doesn't take more than 5 minutes.Anyway , check events inside service `
 
-### 2. Blue/Green Deployment Target Group Conflict
+
+### 3. Blue/Green Deployment Target Group Conflict
 **Error:** `DuplicateTargetGroupName: A target group with the same name already exists.`
 - **Cause:** Terraform might try to create a new target group before the old one is deleted during a rename or migration of service type.
 - **Solution:** Wrap the Target Group creation with unique suffixes or ensure `lifecycle { create_before_destroy = true }` is used (which is handled internally in most cases).
 
-### 3. Service Connect Namespace Latency
+### 4. Service Connect Namespace Latency
 **Potential Issue:** After deploying a new service, it might take 1-2 minutes for the Service Connect DNS name to become resolvable.
 - **Cause:** Propagation delay in Service Discovery / Cloud Map.
 - **Monitoring:** Check the "Service Connect" tab in the ECS Console to verify the status of the endpoints.

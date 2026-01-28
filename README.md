@@ -52,26 +52,32 @@ This project provides a robust, modular, and scalable Terraform configuration to
 
 ## ⚙️ Configuration
 
-### General Project Settings
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `general.environment` | Deployment environment (e.g., `dev`, `prod`) | Required |
-| `general.project` | Project name used for naming resources | Required |
-| `general.region` | AWS Region | Required |
+All available configuration options, including optional parameters and defaults, are documented in detail in:
+👉 **[attributes.tfvars](./attributes.tfvars)**
 
-### Infrastructure Settings
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `infrastructure.type` | Launch type: `EC2` or `FARGATE` | `EC2` |
-| `infrastructure.ec2_types` | List of allowed instance types (for EC2) | `[]` |
+## 🏎️ Full Example: Build, Push & Deploy
 
-### Service Settings
-Each service in the `services` map supports:
-- `img`: Docker image URI
-- `desired_count`: Number of tasks to run
-- `alb_path`: URL path for routing (e.g., `/*`, `/api/*`)
-- `deploy.strategy`: Deployment strategy (`ECS` or `BLUE_GREEN`)
-- `autoscaling.enabled`: Enable/disable autoscaling
+To deploy the provided example applications (Frontend & Backend), follow these steps:
+
+### 1. Build and Push Images
+```bash
+# 1. Build local docker images
+cd example/
+./build.sh
+
+# 2. Push to your ECR registry (replace with your ECR URL and region)
+./push.sh 123456789012.dkr.ecr.eu-central-1.amazonaws.com eu-central-1
+```
+
+### 2. Update Configuration
+Update your `example.tfvars` (or `attributes.tfvars`) with the correct image URIs from your ECR registry.
+
+### 3. Deploy Infrastructure
+```bash
+cd ..
+terraform init
+terraform apply -var-file="example.tfvars"
+```
 
 ## 📝 Documentation
 - [Example Configurations](./docs/examples.md)

@@ -1,6 +1,6 @@
 output "url" {
-    value = module.loadbalancing.url
-    description = "URL of the ALB"
+  value       = "http://${module.loadbalancing.url}"
+  description = "The main entry point URL for the Load Balancer"
 }
 
 output "vpc_id" {
